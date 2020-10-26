@@ -1,0 +1,15 @@
+# Tell Travis that we need Docker
+language: generic 
+sudo: required
+services:
+  - docker
+
+# Build Docker image using Dockerfile.dev
+before_install:
+  - docker build -f Dockerfile.dev -t stathisdim/docker-k8s-react . 
+
+# Run our Test Suite
+script:
+  - docker run -e CI=true stathisdim/docker-k8s-react npm run test -- --coverage
+
+# Deploy to AWS
